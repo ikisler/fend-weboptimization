@@ -422,38 +422,26 @@ var resizePizzas = function(size) {
   changeSliderLabel(size);
 
   // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
-  function determineDx (elem, size) {
-    var oldwidth = elem.offsetWidth;
-    var windowwidth = document.querySelector("#randomPizzas").offsetWidth;
-    var oldsize = oldwidth / windowwidth;
-
-    // TODO: change to 3 sizes? no more xl?
-    // Changes the slider value to a percent width
-    function sizeSwitcher (size) {
-      switch(size) {
-        case "1":
-          return 0.25;
-        case "2":
-          return 0.3333;
-        case "3":
-          return 0.5;
-        default:
-          console.log("bug in sizeSwitcher");
-      }
-    }
-
-    var newsize = sizeSwitcher(size);
-    var dx = (newsize - oldsize) * windowwidth;
-
-    return dx;
-  }
+  // CHANGE: Remove determineDx function, roll it into changePizzaSizes
 
   // Iterates through pizza elements on the page and changes their widths
+  // CHANGES: Integrated determineDx into this function.
+  //   Took out 'for' loop, instead added CSS classes to determine the size of pizza, thus changing them all at once.
   function changePizzaSizes(size) {
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
-      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+    var element = document.getElementById('randomPizzas');
+
+    switch(size) {
+      case "1":
+        element.className = element.className.slice(0,3) + ' small';
+        break;
+      case "2":
+        element.className = element.className.slice(0,3) + ' med';
+        break;
+      case "3":
+        element.className = element.className.slice(0,3) + ' large';
+        break;
+      default:
+        console.log("bug in sizeSwitcher");
     }
   }
 
@@ -498,13 +486,30 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
 // Moves the sliding background pizzas based on scroll position
+// CHANGE: Create array of background pizzas outside of the updatePositions() function,
+//   to prevent it from being calculated each time.
+//   Create array of phase numbers, then this doesn't have to be calculated for each pizza, each time.
+var items = document.getElementsByClassName('mover');
+var phaseNum = [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4];
+/****************************************
+Cannot seem to get this for loop to work.  Will work in jsfiddle, but not here.
+
+for(var k=0; k<items.length; k++) {
+  phaseNum.push(k%5);
+}
+console.log(phaseNum);
+*****************************************/
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
-  var items = document.querySelectorAll('.mover');
-  for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+  var itemsLen = items.length;
+  var scrollTop = (document.body.scrollTop / 1250);
+
+  for (var i = 0; i < itemsLen; i++) {
+    //var phase = Math.sin(scrollTop + (i % 5));  original code, just in case I need it
+    var phase = Math.sin(scrollTop + phaseNum[i]);
+
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
@@ -525,10 +530,10 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  for (var i = 0; i < 35; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
-    elem.src = "images/pizza.png";
+    elem.src = "images/pizzaSmall.png";
     elem.style.height = "100px";
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
