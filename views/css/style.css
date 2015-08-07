@@ -43,6 +43,7 @@ form {
   transform: translateZ(0);
 }
 
+/* Added classes here to change random pizzas to desired size */
 .small .randomPizzaContainer {
   max-width: 25%;
 }
