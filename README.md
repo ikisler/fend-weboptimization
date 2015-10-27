@@ -1,6 +1,8 @@
 # Portfolio and Pizzeria Website Optimization
+###Original code by Cameron Pittman at Udacity, optimizations enacted by Isabeau Kisler
 
-To launch the websites, download the files from Github, then double-click on 'index.html' for the portfolio site, or navigate to the 'views' folder and double-click on the 'pizza.html' file for the pizzeria site.  The pizzeria site is also accessible by going through the portfolio website.
+###The Project
+Optimized an inefficient web application's JavaScript, CSS and assets delivery, ensuring it runs at 60fps and achieves a PageSpeed score of 95.
 
 ## Portfolio Optimizations:
 * Minify and inline the main CSS
@@ -15,4 +17,5 @@ To launch the websites, download the files from Github, then double-click on 'in
 * Change the number of background pizzas ('.mover') to 35, down from 200
 * Add 'will-change' to '.mover' and '.randomPizzaContainer'
 
-Original code by Cameron Pittman at Udacity, optimizations enacted by Isabeau Kisler.
+###Running the Program
+To launch the websites, download the files from Github, then double-click on 'index.html' for the portfolio site, or navigate to the 'views' folder and double-click on the 'pizza.html' file for the pizzeria site.  The pizzeria site is also accessible by going through the portfolio website.
